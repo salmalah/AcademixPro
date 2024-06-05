@@ -6,6 +6,9 @@ const connectDB = require("./config/db");
 // Import routes
 const userRoutes = require("./routes/userRoutes");
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 // Mount routes
 app.use("/api/users", userRoutes);
 
