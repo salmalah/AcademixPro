@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/salmalah/AcademixPro/issues"
   },
-  "homepage": "https://github.com/salmalah/AcademixPro#readme"
+  "homepage": "https://github.com/salmalah/AcademixPro#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
