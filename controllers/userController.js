@@ -8,17 +8,16 @@ const signUpGet = async (req, res, next) => {
 };
 const profileGet = async (req, res) => {
   try {
-    const { username } = req.query;
-    const user = await User.findOne({ username });
+    const user = req.session.user;
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(401).json({ message: "Unauthorized" });
     }
-    res.render("profile", { username, user });
-    console.log(user);
+    res.render("profile", { username: user.username, user });
   } catch (err) {
     res.status(400).send({ msg: err });
   }
 };
+
 const signUp = async (req, res, next) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -50,9 +49,28 @@ const loginUser = async (req, res, next) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
-    res.redirect(`/api/users/profile?username=${user.username}`);
+    // Create a session
+    req.session.user = user;
+    //res.redirect(`/api/users/profile?username=${user.username}`);
+    res.redirect("/api/users/profile");
   } catch (err) {
     res.status(400).send({ msg: err });
+  }
+};
+const logout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send({ msg: "Failed to logout" });
+    }
+    res.redirect("/");
+  });
+};
+const getusers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -62,4 +80,6 @@ module.exports = {
   loginGet,
   signUpGet,
   profileGet,
+  getusers,
+  logout,
 };
