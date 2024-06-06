@@ -1,7 +1,24 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
-
-// Signup function for user registration
+const loginGet = async (req, res, next) => {
+  res.render("login");
+};
+const signUpGet = async (req, res, next) => {
+  res.render("signup");
+};
+const profileGet = async (req, res) => {
+  try {
+    const { username } = req.query;
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.render("profile", { username, user });
+    console.log(user);
+  } catch (err) {
+    res.status(400).send({ msg: err });
+  }
+};
 const signUp = async (req, res, next) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -33,10 +50,16 @@ const loginUser = async (req, res, next) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
-    res.status(200).send({ msg: `Hello ${user.username}` });
+    res.redirect(`/api/users/profile?username=${user.username}`);
   } catch (err) {
     res.status(400).send({ msg: err });
   }
 };
 
-module.exports = { signUp, loginUser };
+module.exports = {
+  signUp,
+  loginUser,
+  loginGet,
+  signUpGet,
+  profileGet,
+};
