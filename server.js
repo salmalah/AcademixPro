@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require("express-session");
 const app = express();
 var bodyParser = require("body-parser");
 const PORT = 5000;
@@ -6,6 +7,15 @@ const connectDB = require("./config/db");
 
 // Import routes
 const userRoutes = require("./routes/userRoutes");
+
+app.use(
+  session({
+    secret: "noesie",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
 // Set EJS as the view engine
 app.set("view engine", "ejs");
 
