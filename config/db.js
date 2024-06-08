@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const dbURI = "mongodb://localhost:27017/Academix-Pro";
+const dbURI = process.env.MONGO_URI;
 
 const connectDB = async () => {
   try {

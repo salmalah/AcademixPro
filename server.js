@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const app = express();
@@ -10,7 +11,7 @@ const userRoutes = require("./routes/userRoutes");
 
 app.use(
   session({
-    secret: "noesie",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
@@ -26,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // Mount routes
 app.use("/api/users", userRoutes);
 app.get("/", (req, res) => {
-  res.render("home");
+  res.send({ msg: "This is Home Page" });
 });
 
 connectDB();
