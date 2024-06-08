@@ -71,7 +71,7 @@ SESSION_SECRET=your_session_secret
           "username": "your_username",
           "email": "your_email@example.com",
           "password": "your_password"
-        } ```
+        }
         
         
         ```
