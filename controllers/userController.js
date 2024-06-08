@@ -3,17 +3,29 @@ const User = require("../models/user");
 
 const signUp = async (req, res, next) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const { userName, email, password } = req.body;
+    const { username, email, password } = req.body;
+    if (!username || !email || !password) {
+      return res.status(400).json({ msg: "Please enter all fields" });
+    }
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ msg: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = new User({
-      username: req.body.username,
-      email: req.body.email,
+      username,
+      email,
       password: hashedPassword,
     });
+
     const savedUser = await newUser.save();
-    res.status(201).send(`User created ${savedUser}`);
+    res.status(201).json({ msg: `User created`, user: savedUser });
   } catch (err) {
-    res.status(400).send({ msg: err });
+    console.error(err);
+    res.status(400).json({ msg: err });
   }
 };
 
