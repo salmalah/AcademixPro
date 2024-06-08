@@ -9,7 +9,8 @@ A simple Task Management System built with Node.js, Express, and Mongoose. This 
 [](https://github.com/salmalah/AcademixPro/blob/main/README.md#prerequisites)
 
 -   Node.js
--   MongoD
+-   MongoDB
+-   Express
 -   Postman (for testing the API)
 
 ## Getting Started
