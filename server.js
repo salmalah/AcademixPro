@@ -8,6 +8,7 @@ const connectDB = require("./config/db");
 
 // Import routes
 const userRoutes = require("./routes/userRoutes");
+const taskRoutes = require("./routes/taskRoutes");
 
 app.use(
   session({
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Mount routes
 app.use("/api/users", userRoutes);
+app.use("/api/tasks", taskRoutes);
 app.get("/", (req, res) => {
   res.send({ msg: "This is Home Page" });
 });
